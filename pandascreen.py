@@ -6,6 +6,7 @@ from kivy.properties import NumericProperty
 from kivy.clock import Clock
 from takepicture import take_picture
 from highfive import poll_high_five
+from highfivescreen import show_high_five
 import time
 
 
@@ -64,13 +65,15 @@ class PandaScreen(FloatLayout):
     def CheckHighFive(self, dt):
         new_count = poll_high_five()
         if new_count > self.high_fives:
-            print new_count
+            show_high_five()
             self.high_fives = new_count
 
     def DoHeart(self):
+        show_high_five()
         print("Heart Pressed")
 
     def DoSmile(self):
+        
         print("Smile Pressed")
 
     def DoCamera(self):
