@@ -3,6 +3,10 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
+import picamera
+import time
+
+camera = picamera.PiCamera()
 
 Builder.load_string("""
 
@@ -60,6 +64,11 @@ class PandaScreen(FloatLayout):
         print("Smile Pressed")
 
     def DoCamera(self):
+        camera.start_preview()
+        time.sleep(5)
+        camera.capture('test.jpg')
+        camera.stop_preview()
+        
         print("Camera Pressed")
 
 
