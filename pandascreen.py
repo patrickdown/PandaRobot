@@ -3,7 +3,9 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.properties import NumericProperty
+from kivy.clock import Clock
 from takepicture import take_picture
+from highfive import poll_high_five
 import time
 
 
@@ -55,8 +57,17 @@ Builder.load_string("""
 class PandaScreen(FloatLayout):
     high_fives = NumericProperty(0)
 
+    def __init__(self, **kwargs):
+        super(PandaScreen, self).__init__(**kwargs)
+        Clock.schedule_interval(self.CheckHighFive, 0.05)
+
+    def CheckHighFive(self, dt):
+        new_count = poll_high_five()
+        if new_count > self.high_fives:
+            print new_count
+            self.high_fives = new_count
+
     def DoHeart(self):
-        self.high_fives = self.high_fives + 1
         print("Heart Pressed")
 
     def DoSmile(self):
@@ -71,6 +82,9 @@ class ButtonsApp(App):
 
     def build(self):
         return PandaScreen()
+
+def PollHighFive(dt):
+    pass
 
 if __name__ == "__main__":
     Window.clearcolor = (1, 1, 1, 1)
