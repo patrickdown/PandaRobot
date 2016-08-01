@@ -1,6 +1,11 @@
 import tempfile
-import picamera
 import time
+
+try:
+    import picamera
+except ImportError:
+    pass
+
 
 def get_file_name():
     f = tempfile.NamedTemporaryFile(mode='w+b', suffix='.jpg', dir='pictures')

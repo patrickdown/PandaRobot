@@ -5,9 +5,23 @@ from kivy.core.window import Window
 from kivy.properties import NumericProperty
 from kivy.clock import Clock
 from takepicture import take_picture
-from highfive import poll_high_five
+from highfive import poll_high_five, sampling_rate
 from highfivescreen import show_high_five
 import time
+
+ser = None
+try:
+    import serial
+    ser = serial.Serial('/dev/ttyACM1', 9600)
+except ImportError:
+    pass
+
+
+def Smile():
+    ser.write("1")
+
+def Frown():
+    ser.write("2")
 
 
 Builder.load_string("""
@@ -60,7 +74,7 @@ class PandaScreen(FloatLayout):
 
     def __init__(self, **kwargs):
         super(PandaScreen, self).__init__(**kwargs)
-        Clock.schedule_interval(self.CheckHighFive, 0.05)
+        Clock.schedule_interval(self.CheckHighFive, 1.0/sampling_rate)
 
     def CheckHighFive(self, dt):
         new_count = poll_high_five()
@@ -73,7 +87,7 @@ class PandaScreen(FloatLayout):
         print("Heart Pressed")
 
     def DoSmile(self):
-        
+        Smile()
         print("Smile Pressed")
 
     def DoCamera(self):
